@@ -1,0 +1,33 @@
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 4vw;
+    background: #771F08;
+    color: #fff;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    
+    .cartBtn{
+        background: #3F1200;
+        color: #fff;
+        padding: 10px 30px;
+        border-radius: 20px;
+        border: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        gap: 15px;
+
+    }
+    
+    .cartCount{
+        background: #A5301A;
+        color: #fff;
+        padding: 4px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
