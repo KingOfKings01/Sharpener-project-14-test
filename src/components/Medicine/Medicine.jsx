@@ -1,16 +1,12 @@
 import { useState, useContext } from 'react';
 import styles from './card.module.css';
-// import CartContext from "../../store/cart-context";
 import dataContext from '../../store/dataContext';
 
 export default function Medicine() {
-  // const [medicine] = useState(medicineList);
   const [cartQuantities, setCartQuantities] = useState({});
   const [qtyValues, setQtyValues] = useState({});
-  
-  const {medicine, addItem} = useContext(dataContext)
+  const { medicine, addItem, setMedicine } = useContext(dataContext);
 
-  
   const handleQuantityChange = (e, id) => {
     const { value } = e.target;
     setQtyValues({ ...qtyValues, [id]: value });
@@ -18,15 +14,34 @@ export default function Medicine() {
 
   const handleSubmit = (e, product) => {
     e.preventDefault();
-
     const { id, name, price } = product;
 
-    setCartQuantities({ ...cartQuantities, [id]: parseInt(qtyValues[id]) || 1 });
+    // Get quantity or default to 1
+    const quantity = parseInt(qtyValues[id]) || 1;
+    
+    // Ensure there is enough stock
+    if (quantity > medicine.find(item => item.id === id).quantity) {
+      alert('Not enough stock available');
+      return;
+    }
+
+    setCartQuantities({ ...cartQuantities, [id]: quantity });
     setQtyValues({ ...qtyValues, [id]: 1 });
 
-    const newProduct = {id, name, price, quantity : parseInt(qtyValues[id]) || 1}
+    // Update the medicine stock
+    setMedicine(prev => {
+      const updatedMedicine = prev.map(item => {
+        if (item.id === id) {
+          return { ...item, quantity: item.quantity - quantity };
+        }
+        return item;
+      });
+      return updatedMedicine;
+    });
 
-    addItem(newProduct)
+    // Add item to cart
+    const newProduct = { id, name, price, quantity };
+    addItem(newProduct);
   };
 
   return (
@@ -41,26 +56,26 @@ export default function Medicine() {
                 <p className={styles.amount}>${price}</p>
                 <p className={styles.amount}>Available: {quantity}</p>
               </div>
-              <form onSubmit={(e) => handleSubmit(e, {id, name, price})}>
+              <form onSubmit={(e) => handleSubmit(e, { id, name, price })}>
                 <label htmlFor={`qty-${id}`}>
                   Amount &nbsp;
                   <input
                     type="number"
                     name={`qty-${id}`}
                     min={1}
+                    max={quantity || 1}
                     value={qtyValues[id] || 1}
                     onChange={(e) => handleQuantityChange(e, id)}
                   />
                 </label>
-                <button className={styles.addToCart}>+ Add</button>
+                { quantity > 0 ? <button type="submit" className={styles.addToCart}>+ Add</button> :
+                <button type="submit" disabled className={styles.addToCartDisabled}>+ Add</button>}
               </form>
             </div>
             <hr />
           </div>
         ))}
       </div>
-      
-
     </div>
   );
 }

@@ -1,19 +1,19 @@
 import { useState } from "react";
 import dataContext from "./dataContext"
 import medicineList from "./medicineList";
+import PropTypes from "prop-types";
 
-export default function DataProvider({children}) {
+export default function DataProvider({ children }) {
     const [items, setItems] = useState([]);
     const [itemCount, setItemCount] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
 
     const [medicine, setMedicine] = useState(medicineList);
 
-    
     const addItemToCartHandler = (product) => {
         setItems((prevItems) => {
             const existingProductIndex = prevItems.findIndex((item) => item.id === product.id);
-            
+
             if (existingProductIndex !== -1) {
                 const updatedItems = [...prevItems];
 
@@ -32,8 +32,11 @@ export default function DataProvider({children}) {
                 price: product.price,
             };
 
+
             setItemCount((prev) => prev + (product.quantity || 1));
             setTotalAmount((prev) => prev + product.price * product.quantity);
+
+            // console.log([...prevItems, newProduct]);
             return [...prevItems, newProduct];
         }
         )
@@ -76,11 +79,9 @@ export default function DataProvider({children}) {
     };
 
     const addMedicine = (newMedicine) => {
+        newMedicine.id = Date.now() + Math.floor(Math.random()),
 
-
-        newMedicine.id = Date.now()+Math.floor(Math.random()),
-
-        setMedicine((prevItems) => [...prevItems, newMedicine])
+            setMedicine((prevItems) => [...prevItems, newMedicine])
 
     }
 
@@ -92,6 +93,7 @@ export default function DataProvider({children}) {
         decreaseQuantity,
         itemCount,
         medicine,
+        setMedicine,
         addMedicine
     };
 
@@ -101,4 +103,10 @@ export default function DataProvider({children}) {
             {children}
         </dataContext.Provider>
     )
+}
+
+
+
+DataProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 }

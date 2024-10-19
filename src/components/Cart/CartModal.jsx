@@ -1,10 +1,10 @@
 import styles from "./cartModal.module.css";
 import { useContext } from "react";
-import CartContext from "../../store/cart-context";
+import dataContext from "../../store/dataContext";
+import PropTypes from "prop-types";
 
 export default function CartModal({ setModalIsOpen }) {
-  const { items, totalAmount,increaseQuantity, decreaseQuantity } = useContext(CartContext);
-
+  const { items, totalAmount, increaseQuantity, decreaseQuantity } = useContext(dataContext);
   return (
     <div>
       <div className={styles.background}>
@@ -44,4 +44,8 @@ export default function CartModal({ setModalIsOpen }) {
       </div>
     </div>
   );
+}
+
+CartModal.propTypes = {
+  setModalIsOpen: PropTypes.func.isRequired
 }

@@ -42,7 +42,6 @@ export default function MedicineForm() {
                     <input type="number" name='qty' placeholder="Quantity Available" required />
                     <button type="submit">Add Medicine</button>
                 </form>
-
             </div>
 
         </div>
