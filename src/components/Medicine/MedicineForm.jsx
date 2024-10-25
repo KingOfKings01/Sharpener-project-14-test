@@ -4,14 +4,11 @@ import styles from './card.module.css'
 
 export default function MedicineForm() {
 
-
     const { addMedicine } = useContext(dataContext)
 
-    const handleForm = (e) => {
+    const handleForm = async (e) => {
         e.preventDefault()
         const { name, description, price, qty } = e.target
-
-        console.log(name.value, description.value, price.value, qty.value)
 
         const newMedicine = {
             name: name.value,
@@ -20,9 +17,9 @@ export default function MedicineForm() {
             quantity: parseInt(qty.value)
         }
 
-        addMedicine(newMedicine)
+        await addMedicine(newMedicine)
 
-        // reset
+        //! reset
         name.value = ''
         description.value = ''
         price.value = ''
@@ -37,9 +34,9 @@ export default function MedicineForm() {
 
                 <form className={styles.form} onSubmit={handleForm}>
                     <input type="text" name='name' placeholder="Name" required />
-                    <input type="text" name='description' placeholder="Description" required />
                     <input type="number" name="price" placeholder="Price" required />
                     <input type="number" name='qty' placeholder="Quantity Available" required />
+                    <textarea type="text" name='description' placeholder="Description" required />
                     <button type="submit">Add Medicine</button>
                 </form>
             </div>

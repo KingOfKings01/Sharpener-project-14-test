@@ -16,3 +16,5 @@ Display Component:
 Table: filed [Name, Description, Price, Quantity Available, and Add to Cart]
 
 quantity on 0 : Out of Stock# Sharpener-project-14-test
+
+last use CURD CURD to store medicines data.

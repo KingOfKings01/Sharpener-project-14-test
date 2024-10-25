@@ -22,7 +22,7 @@ export default function CartModal({ setModalIsOpen }) {
               {items.map(({ id, name, price, quantity }) => (
                 <tr className={styles.row} key={id}>
                   <td className={styles.cursive}>{name}</td>
-                  <td className={styles.center}>{price}</td>
+                  <td className={styles.center}>${price}</td>
                   <td className={styles.center}>{quantity}</td>
                   <td className={styles.actions}>
                     <button onClick={()=>decreaseQuantity(id)}>-</button>

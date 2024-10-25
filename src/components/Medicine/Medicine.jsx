@@ -5,7 +5,7 @@ import dataContext from '../../store/dataContext';
 export default function Medicine() {
   const [cartQuantities, setCartQuantities] = useState({});
   const [qtyValues, setQtyValues] = useState({});
-  const { medicine, addItem, setMedicine } = useContext(dataContext);
+  const { medicine, addItem } = useContext(dataContext);
 
   const handleQuantityChange = (e, id) => {
     const { value } = e.target;
@@ -28,16 +28,16 @@ export default function Medicine() {
     setCartQuantities({ ...cartQuantities, [id]: quantity });
     setQtyValues({ ...qtyValues, [id]: 1 });
 
-    // Update the medicine stock
-    setMedicine(prev => {
-      const updatedMedicine = prev.map(item => {
-        if (item.id === id) {
-          return { ...item, quantity: item.quantity - quantity };
-        }
-        return item;
-      });
-      return updatedMedicine;
-    });
+    // // Update the medicine stock
+    // setMedicine(prev => {
+    //   const updatedMedicine = prev.map(item => {
+    //     if (item.id === id) {
+    //       return { ...item, quantity: item.quantity - quantity };
+    //     }
+    //     return item;
+    //   });
+    //   return updatedMedicine;
+    // });
 
     // Add item to cart
     const newProduct = { id, name, price, quantity };
@@ -47,6 +47,7 @@ export default function Medicine() {
   return (
     <div className={styles.center}>
       <div className={styles.card2}>
+        {medicine.length === 0 && <div>No Medicine</div>}
         {medicine.map(({ id, name, description, price, quantity }) => (
           <div key={id} className={styles.list}>
             <div className={styles.product}>
